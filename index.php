@@ -3,6 +3,7 @@
 
 <article>
     <h1>Hämta data</h1>
+    <p>test!</p>
     <?php include "fetch.php" ?>
 </article>
 
