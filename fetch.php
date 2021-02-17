@@ -11,7 +11,7 @@ if ($result = $conn->query($sql)) {
 //Skapa en while-loop för att hämta varje rad
     //Skriv ut endast ett värde(en kolumn, en rad -- en cell)
     while ($row = $result->fetch_assoc()) {
-        print("Användare i databasen: " . $row['realname'] . "<br>");
+        print("Användare i databasen: " . $row['username'] . "<br>");
 
     }
 }

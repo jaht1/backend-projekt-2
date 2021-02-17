@@ -10,20 +10,28 @@
 <article>
 <h2>Logga in</h2>
 <p>För att se emailen på annonserna, logga in eller registrera dig.</p>
-<input type="button" value="Logga in">
-<input type="button" value="Registrera dig"><br>
-
-<!--- Login formulär -->
-<form action="index.php" method="post">
-Användarnamn:
-<br><input type="text" name="usr"><br>
-Lösenord
-<br><input type="password" name="psw"><br>
-<input type="submit" value="Logga in">
-</form>
+<a href="index.php?stage=signin"><input type="button" value="Logga in"></a>
+<a href="index.php?stage=signup"><input type="button" value="Registrera dig"></a><br>
 
 
-<?php include "register.php" ?>
+
+
+<?php
+//Om man har klickat på register-knappen - includea register.php
+if (isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'signup' || $_REQUEST['stage'] == 'signup'))
+{
+    include "register.php";
+}
+
+else if (isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'signin') || $_REQUEST['stage'] == 'login'){
+    include "login.php";
+}
+?>
+
+
+<?php
+
+?>
 </article>
 
 
