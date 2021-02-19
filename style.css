@@ -112,3 +112,16 @@ footer {
         margin-top: 10px;   /* Lite space mellan meny och logo */
     }
 }
+
+
+
+.outer{
+    border: dashed 1px black;
+     width:200px;
+ }
+ .centered{
+     background-color:skyblue;
+     color:white;
+     text-align:center;
+     font-size:20px;
+ }

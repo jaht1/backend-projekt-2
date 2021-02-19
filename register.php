@@ -1,4 +1,6 @@
 
+<?php $conn = create_conn();?>
+
 <!--- Login formulär -->
 
 <form action="index.php" method="post">
@@ -16,60 +18,56 @@ Ditt riktiga namn:
         <br><input type='text' name='bio'><br>
         Lön:
         <br><input type='text' name='salary'><br>
-        Preferens (1-3):
+        Preferens (1 = man, 2 = kvinna, 3 = annan, 4 = båda, 5 = alla):
         <br><input type='text' name='preference'><br>
-        <input type='submit' value='Registrera dig'>
+        <input type="hidden" name="stage" value="register">
+        <input type='submit' value='Registrera dig'/>
 </form>
 
 <?php
-if(isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'signup')){
-//Kolla att man klickat på submit
-//if (isset($_REQUEST['usr']) && isset($_REQUEST['psw'])) {
 
+if (isset($_REQUEST['usr']) && isset($_REQUEST['psw'])) {
     $userExist = false;
     $conn = create_conn();
-
-//Skapa SQL kommando
     $sql = "SELECT * FROM users";
-
-//Kör SQL kommando på databasen
     if ($result = $conn->query($sql)) {
-//Skapa en while-loop för att hämta varje rad
+        //Skapa en while-loop för att hämta varje rad
         //Skriv ut endast ett värde(en kolumn, en rad -- en cell)
         while ($row = $result->fetch_assoc()) {
             if ($row['username'] == $_REQUEST['usr']) {
-                print("Användarnamnet existerar redan. Vill du försöka <a href='index.php?stage=signin'> logga in? <a/><br>");
+                print("<p style='color:red;''>Användarnamnet existerar redan. Vill du försöka <a href='index.php?stage=signin'> logga in? <a/></p><br>");
                 $userExist = true;
             }
         }
-    }
-    /*if (isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'signin') || $_REQUEST['stage'] == 'login'){
-        include "login.php";
+    } 
+    if($userExist == false) {
+        $username = test_input($_REQUEST['usr']);
+        $password = test_input($_REQUEST['psw']);
+        $password = hash("sha256", $password);
+        $realname = test_input($_REQUEST['rlname']);
+        $email = test_input($_REQUEST['email']);
+        $zip = test_input($_REQUEST['zip']);
+        $bio = test_input($_REQUEST['bio']);
+        $salary = test_input($_REQUEST['salary']);
+        $preference = test_input($_REQUEST['preference']);
+
+        // Prepared statements går snabbare att köra och skyddar mot SQL Injection!$statement = $conn->prepare("INSERTINTO users (username, email) VALUES (?, ?)");$statement->bind_param("ss", $username, $email);// De flesta metoderna returnerar ett objekt (sant) om de lyckas & false ifall de misslyckas.if ($statement->execute()) {    print("Du har registrerats!");}Bra MySQLi procedural och OO demo
+        $statement = $conn->prepare("INSERT INTO users (username, realname, password, email, zipcode, bio, salary, preference)
+     VALUES (?,?,?,?,?,?,?,?)");
+        $statement->bind_param("ssssisii", $username, $realname, $password, $email, $zip, $bio, $salary, $preference);
+
+        if ($statement->execute()) {
+            print("Du har registrerats!");
+        }
+//Kom ihåg errorhandling - här ska finnas en else-sats
+        else {
+            print("Något gick fel, senaste felet: " . $conn->$error);
+        }
+
+        /*if(isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'register')){
+    print("Loggar in...");
+    header("refresh:2;url=./profile.php");
     }*/
 
-    //KOM IHÅG XSS PROTECTION
-
-    $realname = $_REQUEST['rlname'];
-    $email = $_REQUEST['email'];
-    $zip = $_REQUEST['zip'];
-    $bio = $_REQUEST['bio'];
-    $salary = $_REQUEST['salary'];
-    $preference = $_REQUEST['preference'];
-
-    //TODO: börja med att checka ifall användaren redan finns i databasen
-    //TODO: slutför registreringsförmuläret
-    //TODO: Skapa inloggningsformuläret
-
-    // Prepared statements går snabbare att köra och skyddar mot SQL Injection!$statement = $conn->prepare("INSERTINTO users (username, email) VALUES (?, ?)");$statement->bind_param("ss", $username, $email);// De flesta metoderna returnerar ett objekt (sant) om de lyckas & false ifall de misslyckas.if ($statement->execute()) {    print("Du har registrerats!");}Bra MySQLi procedural och OO demo
-    $statement = $conn->prepare("INSERT INTO users (username, realname, password, email, zipcode, bio, salary, preference)
-                                    VALUES (?,?,?,?,?,?,?,?)");
-    $statement->bind_param("ssssisii", $username, $realname, $password, $email, $zip, $bio, $salary, $preference);
-
-    if ($statement->execute()) {
-        print("Du har registrerats!");
-    }
-//Kom ihåg errorhandling - här ska finnas en else-sats
-    else {
-        print("Något gick fel, senaste felet: " . $conn->$error);
     }
 }
