@@ -1,4 +1,6 @@
+
 <?php $conn = create_conn();?>
+
 
 <form action="index.php" method="post">
 Användarnamn:
@@ -7,13 +9,14 @@ Lösenord:
 <br><input type="password" name="pswr"><br>
 <input type="hidden" name="stage" value="login">
 <input type='submit' value='Logga in'>
-
+</form>
 <?php
 //if (isset($_REQUEST['usr']) && isset($_REQUEST['psw'])) {
 if (isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'login')) {
     $conn = create_conn();
     $password = $_REQUEST['pswr'];
     $password = hash("sha256", $password);
+    $username = $_REQUEST['usrn'];
     $sql = "SELECT * FROM users";
     if ($result = $conn->query($sql)) {
         //Skapa en while-loop för att hämta varje rad
@@ -21,15 +24,23 @@ if (isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'login')) {
         while ($row = $result->fetch_assoc()) {
             if ($row['username'] == $_REQUEST['usrn']) {
                 if ($row['password'] == $password) {
+                    
                     print("<p style='color:green;''>loggar in om 2 sekunder...<a/></p><br>");
-                    $_SESSION['user'] = $_REQUEST['usr'];
+                    $_SESSION['user'] = $username;
+                    print("Hej igen ".$_SESSION['user']);
                     header("refresh:2;url=./profile.php");
+                    exit();
                     break;
-                } else {
-                    print("<p style='color:red;''>Användarnamn eller lösenordet är fel. Försök igen. <a/></p><br>");
+                } 
+                else {
+                    print("<p style='color:red;''>Användarnamn eller lösenord är fel. Försök igen. <a/></p><br>");
                     break;
                 }
-                //$userExist = true;
+                
+            }
+            else {
+                print("<p style='color:red;''>Användarnamn eller lösenord är fel. Försök igen. <a/></p><br>");
+                break;
             }
         }
     }

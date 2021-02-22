@@ -1,6 +1,7 @@
 <?php include "init.php"?>
 <?php include "head.php"?>
 
+
 <article>
 <h1>Profilsidan</h1>
 <?php
@@ -8,8 +9,10 @@
 //print($_SESSION['user']);
 
 if (isset($_SESSION['user'])) {
+
     $conn = create_conn(); // mysqli objektet skapas
-    $user = $_SESSION['user']; //Kolla vem som är inloggad
+    //echo $row['username'];
+    $user = $_SESSION['username']; //Kolla vem som är inloggad
     $sql = "SELECT * FROM users WHERE username = ?"; // ? placeholder för data
 
     $stmt = $conn->prepare($sql); // prepare returnerar mysqli_stmt objekt
@@ -23,11 +26,14 @@ if (isset($_SESSION['user'])) {
     print("Riktiga namnet: " . $row['realname']);
     print("<p>Riktiga namnet: <input type'text' value='" . $row['realname'] . "'></p><br>");
     print("<p>Annonstext: <textarea>" . $row['bio'] . "</textarea></p>");
-}
+} 
 
-
-else{
+else {
     print("Du försöker se på någon annans profil");
+    print("Riktiga namnet: " . $row['realname']);
+    print("Postnummer: " . $row['zip']);
+    print("Bio: " . $row['bio']);
+
     //TODO: kommentarsformulär
     //För att hitta kommentarerna för en viss profil måste ni hitta idn för profilen
     //SELECT id, username FROM users HWERE username = $_REQUEST['user];
@@ -35,12 +41,7 @@ else{
 }
 ?>
 <input type="button" value = "Modifiera">
-<?php
-//PHP-koden fortsätter
-print("Lite till info från databasen : ");
 
-//Checka att session user e set för att ändra profilen
-?>
 </article>
 
 

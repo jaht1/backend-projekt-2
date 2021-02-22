@@ -57,17 +57,14 @@ if (isset($_REQUEST['usr']) && isset($_REQUEST['psw'])) {
         $statement->bind_param("ssssisii", $username, $realname, $password, $email, $zip, $bio, $salary, $preference);
 
         if ($statement->execute()) {
-            print("Du har registrerats!");
+            $_SESSION['user'] = $username;
+            print("<p style='color: green'>Du har registrerats!</p>");
+            header("refresh:2;url=./users.php");
         }
-//Kom ihåg errorhandling - här ska finnas en else-sats
+
         else {
             print("Något gick fel, senaste felet: " . $conn->$error);
         }
-
-        /*if(isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'register')){
-    print("Loggar in...");
-    header("refresh:2;url=./profile.php");
-    }*/
 
     }
 }

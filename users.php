@@ -24,6 +24,7 @@
 <label for="pref">Preference:</label><br>
 
 <select name="pref">
+
   <option value="male">Man</option>
   <option value="female">Kvinna</option>
   <option value="other">Annan</option>
