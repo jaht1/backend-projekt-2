@@ -26,7 +26,7 @@ Ditt riktiga namn:
 
 <?php
 
-if (isset($_REQUEST['usr']) && isset($_REQUEST['psw'])) {
+if (!empty($_REQUEST['usr']) && !empty($_REQUEST['psw']) && !empty($_REQUEST['email'])) {
     $userExist = false;
     $conn = create_conn();
     $sql = "SELECT * FROM users";
@@ -39,8 +39,13 @@ if (isset($_REQUEST['usr']) && isset($_REQUEST['psw'])) {
                 $userExist = true;
             }
         }
-    } 
-    if($userExist == false) {
+    }
+    $email = test_input($_POST["email"]);
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $emailErr = "Fel emailformat.";
+    }
+    
+    if ($userExist == false) {
         $username = test_input($_REQUEST['usr']);
         $password = test_input($_REQUEST['psw']);
         $password = hash("sha256", $password);
@@ -60,11 +65,12 @@ if (isset($_REQUEST['usr']) && isset($_REQUEST['psw'])) {
             $_SESSION['user'] = $username;
             print("<p style='color: green'>Du har registrerats!</p>");
             header("refresh:2;url=./users.php");
-        }
-
-        else {
+        } else {
             print("Något gick fel, senaste felet: " . $conn->$error);
         }
 
     }
+} 
+else if (empty($_REQUEST['usr']) || empty($_REQUEST['psw']) || empty($_REQUEST['email'])) {
+    print("<p>Ange åtminstone användarnamn, lösenord och email.</p><br>");
 }

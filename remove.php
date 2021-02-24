@@ -2,7 +2,7 @@
 
 <article>
 <form action="index.php" method="post">
-Ange ditt lösenord för att radera din kontaktannons:
+Ange ditt lösenord för att radera din kontaktannons:<br>
 <input type="password" name="pswrd"><br>
 <input type="hidden" name="stage" value="delete">
 <input type='submit' value='Radera'>
@@ -11,7 +11,7 @@ Ange ditt lösenord för att radera din kontaktannons:
 
 
 <?php
-print($_SESSION['user']);
+//print($_SESSION['user']);
 $conn = create_conn();
 if (isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'delete')) {
 
@@ -28,16 +28,23 @@ if (isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'delete')) {
                     print("<p>Kontot raderas...</p>");
                     $del = "DELETE FROM users WHERE username='$username'";
 
+                    /*$statement = $conn->prepare("DELETE users WHERE username=?");
+                    $statement->bind_param("s", $username);
+
+                    $statement->execute();*/
                     if (mysqli_query($conn, $del)) {
+                    //if ($statement->execute()) {
+                        session_destroy();
                         echo "<p><b>Kontot har raderats.</b></p>";
+                        
                         header("refresh:2;url=./index.php");
                     } else {
                         echo "<p style='color:red;>Problem med att radera kontot: " . mysqli_error($conn) . "</p>";
                     }
+                    $statement->close();
                     //mysqli_close($conn);
-                    
-                } 
-                else {
+
+                } else {
                     print("<p style='color:red;''>Lösenordet är fel. Det gick inte att radera ditt konto. </p><br>");
                     break;
                 }

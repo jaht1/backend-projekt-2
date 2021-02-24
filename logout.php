@@ -1,5 +1,5 @@
 <?php
 $conn = create_conn();
-print("Loggar ut...");
+print("<br><p><b>Loggar ut...</b></p>");
 header("refresh:1;url=./index.php");
 session_destroy();

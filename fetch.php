@@ -3,7 +3,7 @@
 $conn = create_conn();
 //Om man har sorterat/filtrerat - if
 
-if(isset($_REQUEST['pref'])){
+if($_REQUEST['pref'] != ''){
     $preference = $_REQUEST['pref'];
     if($preference == "male"){
         $sql = "SELECT * FROM `users` WHERE `preference` = 1";
@@ -29,18 +29,23 @@ if(isset($_REQUEST['pref'])){
 }
 
 
-else if (isset($_REQUEST['salary'])) {
-    print("filtrerar enligt årslön...");
+else if ($_REQUEST['salary'] == "rich") {
+    //print("filtrerar enligt hög årslön...");
     //Skapa SQL kommando
     $sql = "SELECT * FROM users ORDER BY salary DESC";
     filter($sql);
 }
 
+if ($_REQUEST['salary'] == "poor") {
 
-if (!isset($_REQUEST['salary'])) {
-    $sql = "SELECT * FROM users";
+    $sql = "SELECT * FROM users ORDER BY salary ASC";
     filter($sql);
 }
+
+/*else{
+    $sql = "SELECT * FROM users";
+    filter($sql);
+}*/
 
 function filter($sql)
 {
@@ -48,21 +53,20 @@ function filter($sql)
     $prefArray = ['', 'Man', 'Kvinna', 'Annan', 'Båda', 'Alla'];
     //Kör SQL kommando på databasen
     if ($result = $conn->query($sql)) {
-        //Skapa en while-loop för att hämta varje rad
-        //Skriv ut endast ett värde(en kolumn, en rad -- en cell)
         while ($row = $result->fetch_assoc()) {
             print("<article><div class='outer'>");
             print("<div class='centered'>" . $row['realname'] . "</div>");
-            print("<p>Användarnamn: " . $row['username'] . "</p>");
-            print($row['bio'] . '<br>');
+            print("<b>Användarnamn: </b>" . $row['username'] . "<br>");
             print("<b>Preferens: </b>" . $prefArray[$row['preference']] . "<br>");
            if (isset($_SESSION['user'])) {
                 print("<b>Email: </b>" . $row['email'] . "<br>");
                 print("<b>Lön: </b>" . $row['salary'] . "<br>");
 
             }
+            print($row['bio'] . '<br>');
             //$_SESSION['userdata'] = $row['username'];
             print("<a href='./profile.php?user=".$row['username']."'>Kommentera!</a>");
+            
             print("</div></article>");
         }
     } else {

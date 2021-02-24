@@ -3,8 +3,8 @@
 
 <article>
     <h1>Bläddra bland kontaktannonserna</h1>
-    <p>Använd gärna filtrerings och sorteringsformuläret:</p>
-    <p>
+    
+    <br>
 <!--filtreringsformulär-->
         <form action="users.php" method="get">
 <!--radio buttons för sortering - förmögenhet-->
@@ -24,7 +24,7 @@
 <label for="pref">Preference:</label><br>
 
 <select name="pref">
-
+<option disabled selected value> välj könpreferens </option>
   <option value="male">Man</option>
   <option value="female">Kvinna</option>
   <option value="other">Annan</option>

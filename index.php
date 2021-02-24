@@ -8,12 +8,12 @@
 
 
 <?php if (!isset($_SESSION['user'])) {
-    print("<h2>Logga in</h2>");
+    print("<h1>Logga in</h1>");
     print("<p>För att se emailen på annonserna, logga in eller registrera dig.</p>");
     print('<a href="index.php?stage=signin"><input type="button" value="Logga in"></a>');
     print('<a href="index.php?stage=signup"><input type="button" value="Registrera dig"></a><br>');
 } else {
-    print("<h2>Välkommen " . $_SESSION['user'] . "!</h2>");
+    print("<h1>Välkommen " . $_SESSION['user'] . "!</h1>");
     print('<a href="index.php?stage=signout"><input type="button" value="Logga ut"></a>');
 }
 ?>
@@ -37,7 +37,7 @@ if (isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'signup' || $_REQUEST['s
 </article>
 
 <article>
-<h2>Uppgift 5 - ta bort data</h2>
+<h1>Uppgift 5 - ta bort data</h1><br>
 <a href="index.php?stage=remove"><input type="button" value="Ta bort din kontaktannons"></a>
 </article>
 
@@ -49,7 +49,7 @@ if (isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'remove' || $_REQUEST['s
 <article>
 <?php
 if (isset($_SESSION['user'])) {
-    print('<a href="https://cgi.arcada.fi/~ahtijenn/backend/backend-projekt-2/profile.php"><input type="button" value="Modifiera din profil"></a>');
+    print('<a href=./profile.php?user=' . $_SESSION['user'] . '><input type="button" value="Modifiera din profil"></a>');
 
     //url=./profile.php"
 }
