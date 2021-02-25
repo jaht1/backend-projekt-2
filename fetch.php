@@ -86,14 +86,14 @@ function filter($sql)
             print("<b>Preferens: </b>" . $prefArray[$row['preference']] . "<br>");
             if (isset($_SESSION['user'])) {
                 print("<b>Email: </b>" . $row['email'] . "<br>");
-                print("<b>Lön: </b>" . $row['salary'] . "<br>");
+                print("<b>Lön: </b>" . $row['salary'] . "€<br>");
 
             }
             print($row['bio'] . '<br>');
             //$_SESSION['userdata'] = $row['username'];
             $userName =$row['username'];
             
-            print("<a href='./profile.php?user=" . $row['username'] . "'>Kommentera!</a><br>");
+            print("<a href='./profile.php?user=" . $row['username'] . "'>Öppna profilen</a><br>");
             /*print('<form action="./users.php" method="post"><input type="submit" name="addLike" value="Like"/><input type="hidden" name="id" value="$userName"/>');
             print("</form>");*/
             

@@ -82,6 +82,12 @@ h1 {
     color: #BF9663;
     text-shadow: 1px 1px 1px #592202;
 }
+h2{
+    margin: 0;              /* bort med inbyggd margin */
+    font-size: x-large;
+    color: #BF9663;
+    text-shadow: 1px 1px 1px #592202;
+}
 
 /* Sidfoten */
 footer {

@@ -16,6 +16,7 @@
     print("<h1>Välkommen " . $_SESSION['user'] . "!</h1><br>");
     $_SESSION['refresh'] = "ref";
     print('<a href="index.php?stage=signout"><input type="button" class="button" value="Logga ut"></a>');
+    print('<a href=./profile.php?user=' . $_SESSION['user'] . '><input type="button" class="button" value="Gå till min profil"></a>');
 }
 
 //$sql = "ALTER TABLE users ADD likes int(1000)";
@@ -40,8 +41,8 @@ if (isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'signup' || $_REQUEST['s
 </article>
 <?php if(isset($_SESSION['refresh'])){ ?>
 <article>
-<h1>Uppgift 5 - ta bort data</h1><br>
-<a href="index.php?stage=remove"><input type="button" class="button" value="Ta bort din kontaktannons"></a>
+<h2>Radera din profil</h2><br>
+<a href="index.php?stage=remove"><input type="button" class="button" value="Ta bort min kontaktannons"></a>
 </article>
 <?php } ?>
 <?php
@@ -51,11 +52,9 @@ if (isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'remove' || $_REQUEST['s
 ?>
 <article>
 <?php
-if (isset($_SESSION['refresh'])) {
-    print('<a href=./profile.php?user=' . $_SESSION['user'] . '><input type="button" class="button" value="Modifiera din profil"></a>');
-
-    //url=./profile.php"
-}
+/*if (isset($_SESSION['refresh'])) {
+    print('<a href=./profile.php?user=' . $_SESSION['user'] . '><input type="button" class="button" value="Gå till min profil"></a>');
+}*/
 
 ?>
 </article>

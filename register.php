@@ -40,37 +40,39 @@ if (!empty($_REQUEST['usr']) && !empty($_REQUEST['psw']) && !empty($_REQUEST['em
             }
         }
     }
-    $email = test_input($_POST["email"]);
+
+   $email = test_input($_REQUEST["email"]);
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $emailErr = "Fel emailformat.";
+        print("<p style='color:red;''>Fel emailformat.<a/></p><br>");
     }
-    
-    if ($userExist == false) {
-        $username = test_input($_REQUEST['usr']);
-        $password = test_input($_REQUEST['psw']);
-        $password = hash("sha256", test_input($password));
-        $realname = test_input($_REQUEST['rlname']);
-        $email = test_input($_REQUEST['email']);
-        $zip = test_input($_REQUEST['zip']);
-        $bio = test_input($_REQUEST['bio']);
-        $salary = test_input($_REQUEST['salary']);
-        $preference = test_input($_REQUEST['preference']);
 
-        // Prepared statements går snabbare att köra och skyddar mot SQL Injection!$statement = $conn->prepare("INSERTINTO users (username, email) VALUES (?, ?)");$statement->bind_param("ss", $username, $email);// De flesta metoderna returnerar ett objekt (sant) om de lyckas & false ifall de misslyckas.if ($statement->execute()) {    print("Du har registrerats!");}Bra MySQLi procedural och OO demo
-        $statement = $conn->prepare("INSERT INTO users (username, realname, password, email, zipcode, bio, salary, preference)
+   
+        else if ($userExist == false) {
+            $username = test_input($_REQUEST['usr']);
+            $password = test_input($_REQUEST['psw']);
+            $password = hash("sha256", test_input($password));
+            $realname = test_input($_REQUEST['rlname']);
+            $email = test_input($_REQUEST['email']);
+            $zip = test_input($_REQUEST['zip']);
+            $bio = test_input($_REQUEST['bio']);
+            $salary = test_input($_REQUEST['salary']);
+            $preference = test_input($_REQUEST['preference']);
+
+            // Prepared statements går snabbare att köra och skyddar mot SQL Injection!$statement = $conn->prepare("INSERTINTO users (username, email) VALUES (?, ?)");$statement->bind_param("ss", $username, $email);// De flesta metoderna returnerar ett objekt (sant) om de lyckas & false ifall de misslyckas.if ($statement->execute()) {    print("Du har registrerats!");}Bra MySQLi procedural och OO demo
+            $statement = $conn->prepare("INSERT INTO users (username, realname, password, email, zipcode, bio, salary, preference)
      VALUES (?,?,?,?,?,?,?,?)");
-        $statement->bind_param("ssssisii", $username, $realname, $password, $email, $zip, $bio, $salary, $preference);
+            $statement->bind_param("ssssisii", $username, $realname, $password, $email, $zip, $bio, $salary, $preference);
 
-        if ($statement->execute()) {
-            $_SESSION['user'] = $username;
-            print("<p style='color: green'>Du har registrerats!</p>");
-            header("refresh:2;url=./users.php");
-        } else {
-            print("Något gick fel, senaste felet: " . $conn->$error);
+            if ($statement->execute()) {
+                $_SESSION['user'] = $username;
+                print("<p style='color: green'>Du har registrerats!</p>");
+                header("refresh:2;url=./index.php");
+            } else {
+                print("Något gick fel, senaste felet: " . $conn->$error);
+            }
+
         }
-
-    }
-} 
-else if (empty($_REQUEST['usr']) || empty($_REQUEST['psw']) || empty($_REQUEST['email'])) {
+    
+} else if (empty($_REQUEST['usr']) || empty($_REQUEST['psw']) || empty($_REQUEST['email'])) {
     print("<p>Ange åtminstone användarnamn, lösenord och email.</p><br>");
 }
