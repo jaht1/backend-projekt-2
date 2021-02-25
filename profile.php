@@ -28,20 +28,23 @@ if ($_SESSION['user'] == $_GET['user']) {
     //while ($row = $result->fetch_assoc()) {
         print("<h1> " . $row['realname'] . "</h1>");
     print("<form action='profile.php?user=". $user . "' method='post'>");
-    print("Användarnamn: <br><input type='text' name='usr' value='" . $row['username'] . "'>");
+    print("Användarnamn: <br><input type='text' name='usr' value='" . $row['username'] . "'required>");
     print("<p>Riktiga namnet: <br><input type='text' name='rlname' value='" . $row['realname'] . "'></p>");
-    print("<p>Email: <br><input type='text' name='email' value='" . $row['email'] . "'></p>");
+    print("<p>Email: <br><input type='text' name='email' value='" . $row['email'] . "'required></p>");
     print("<p>Postnummer: <br><input type='text' name='zip' value='" . $row['zipcode'] . "'></p>");
 
     print("<p>Annonstext: <br><input type='text' name='bio' value='" . $row['bio'] . "'></p>");
     //print("<p>Postnummer: <br><input type='text' name='zip' value='" . $row['zip'] . "'></p>");
     print("<p>Lön: <br><input type='text' name='salary' value='" . $row['salary'] . "'>€/år</p>");
-    print("<p>Preferens: <br> <input type='text' name='preference' value='" . $row['preference'] . "'></p>");
+    print("<p>Preferens: <br> <input type='text' name='preference' value='" . $row['preference'] . "'required></p>");
     //print("id: " . $row['id']);
     print("<input type='submit' value='Uppdatera din profil'/>");
     print("</form>");
     $id = $row['id'];
     //}
+
+
+    //sätt ny session user
 
     if (isset($_REQUEST['usr']) && isset($_REQUEST['email'])) {
 
@@ -55,6 +58,8 @@ if ($_SESSION['user'] == $_GET['user']) {
         $salary = test_input($_REQUEST['salary']);
         $preference = test_input($_REQUEST['preference']);
 
+
+        
         $statement = $conn->prepare("UPDATE users SET username=?, realname=?, email=?, zipcode=?, bio=?, salary=?, preference=? WHERE id=?");
         $statement->bind_param("sssisiii", $username, $realname, $email, $zip, $bio, $salary, $preference, $id);
 
@@ -91,11 +96,13 @@ if ($_SESSION['user'] == $_GET['user']) {
     
     print("<h1> " . $row['realname'] . "</h1>");
     print("<p >Användarnamn: <br> <b>" . $row['username'] . "</b></p>");
+    
     if (isset($_SESSION['user'])) {
-        print("<p>Postnummer: <br> <b>" . $row['zip'] . "</b></p>");
+        
         print("<p>Email: <br><b>" . $row['email'] . "</b></p>");
+        print("<p>Lön: <br><b>" . $row['salary'] . "€/år</b></p>");
     }
-    print("<p>Lön: <br><b>" . $row['salary'] . "€/år</b></p>");
+    print("<p>Postnummer: <br> <b>" . $row['zip'] . "</b></p>");
     print("<p>Preferens: <br><b>" . $prefArray[$row['preference']] . "</b></p>");
     print("<p>Bio: <br><b>" . $row['bio'] . "</b></p>");
 

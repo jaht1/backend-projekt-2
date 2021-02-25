@@ -125,16 +125,35 @@ footer {
 
 
 .outer{
-    border: groove 1px #877B6F;
+    border: ridge 1px #877B6F;
      width:200px;
+     padding: 10px;
  }
  .centered{
      background-color:#BF9663;
      color:white;
      text-align:center;
      font-size:20px;
+     
  }
 
 .link{
     color: #592202;
  }
+
+
+ .button {
+    background-color: #733702;
+    border: none;
+    color: #D7D7D9;
+    padding: 10px 27px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+  .button:hover{
+    background-color: #592202;
+  }

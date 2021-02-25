@@ -6,7 +6,7 @@
     
     <br>
 <!--filtreringsformulär-->
-        <form action="users.php" method="get">
+        <form action="users.php" method="post">
 <!--radio buttons för sortering - förmögenhet-->
 <label for="rich">Rika först</label>
 <input type="radio" name="salary" value="rich" checked>

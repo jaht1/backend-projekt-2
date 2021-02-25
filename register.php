@@ -5,13 +5,13 @@
 
 <form action="index.php" method="post">
 Användarnamn:
-<br><input type="text" name="usr"><br>
+<br><input type="text" name="usr" required><br>
 Lösenord:
-<br><input type="password" name="psw"><br>
+<br><input type="password" name="psw" required><br>
 Ditt riktiga namn:
         <br><input type='text' name='rlname'><br>
         Email:
-        <br><input type='text' name='email'><br>
+        <br><input type='text' name='email' required><br>
         Postnummer:
         <br><input type='text' name='zip'><br>
         Berätta kort om dig själv:
@@ -48,7 +48,7 @@ if (!empty($_REQUEST['usr']) && !empty($_REQUEST['psw']) && !empty($_REQUEST['em
     if ($userExist == false) {
         $username = test_input($_REQUEST['usr']);
         $password = test_input($_REQUEST['psw']);
-        $password = hash("sha256", $password);
+        $password = hash("sha256", test_input($password));
         $realname = test_input($_REQUEST['rlname']);
         $email = test_input($_REQUEST['email']);
         $zip = test_input($_REQUEST['zip']);

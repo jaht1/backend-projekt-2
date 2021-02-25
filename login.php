@@ -13,39 +13,62 @@ Lösenord:
 <?php
 //if (isset($_REQUEST['usr']) && isset($_REQUEST['psw'])) {
 if (isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'login')) {
-    $wrongPass = false;
+
     $conn = create_conn();
-    $password = $_REQUEST['pswr'];
+    $wrongPass = true;
+    $password = test_input($_REQUEST['pswr']);
     $password = hash("sha256", $password);
-    $username = $_REQUEST['usrn'];
+    $username = test_input($_REQUEST['usrn']);
 
     $sql = "SELECT * FROM users";
 
-    if ($result = $conn->query($sql)) {
-        while ($row = $result->fetch_assoc()) {
-            //print($row['username']);
-            if ($row['username'] == $_REQUEST['usrn']) {
+    $stmt = $conn->prepare("SELECT username, password FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $stmt->close();
 
-                if ($row['password'] == $password) {
-                    $wrongpass == false;
-                    print("<p style='color:green;''>loggar in om 2 sekunder...<a/></p><br>");
-                    $_SESSION['user'] = $username;
-                    //print("Hej igen ".$_SESSION['user']);
-                    header("refresh:2;url=./profile.php");
-                    //exit();
-                    break;
-                }
-
-            } else {
-                $wrongPass = true;
-
-            }
-        }
-
-    } if ($wrongPass == true) {
+    if ($result->num_rows == 0) {
         print("<p style='color:red;''>Användarnamn eller lösenord är fel. Försök igen. </p>");
+    } else {
+        $row = $result->fetch_assoc();
+        if ($password == $row['password']) {
+            $_SESSION['user'] = $username;
+            //print("Hej igen " . $_SESSION['user']);
+            header("refresh:2;url=./index.php");
+            print("<p style='color:green;''>loggar in om 2 sekunder...<a/></p><br>");
+
+        } else {
+            print("<p style='color:red;''>Användarnamn eller lösenord är fel. Försök igen. </p>");
+        }
     }
 }
+
+/*if ($result = $conn->query($sql)) {
+while ($row = $result->fetch_assoc()) {
+//print($row['username']);
+if ($row['username'] == $_REQUEST['usrn']) {
+
+if ($row['password'] == $password) {
+$wrongpass == false;
+print("<p style='color:green;''>loggar in om 2 sekunder...<a/></p><br>");
+$_SESSION['user'] = $username;
+//print("Hej igen ".$_SESSION['user']);
+header("refresh:2;url=./index.php");
+//exit();
+break;
+}
+
+} /*else {
+$wrongPass = true;
+
+}*/
+/* }
+
+} if ($wrongPass == true) {
+print("<p style='color:red;''>Användarnamn eller lösenord är fel. Försök igen. </p>");
+}
+}*/
 
 /*if (isset($_REQUEST['stage']) && ($_REQUEST['stage'] == 'login')) {
 $conn = create_conn();
